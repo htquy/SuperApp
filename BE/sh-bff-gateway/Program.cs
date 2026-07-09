@@ -141,6 +141,82 @@ app.MapPost("/api/auth/login", async (
     await responseMessage.Content.CopyToAsync(context.Response.Body);
 });
 
+// Custom Middleware for business APIs (/api/hrm/**)
+app.Use(async (context, next) =>
+{
+    var path = context.Request.Path.Value ?? "";
+    if (path.StartsWith("/api/hrm/", StringComparison.OrdinalIgnoreCase) || 
+        path.Equals("/api/hrm", StringComparison.OrdinalIgnoreCase))
+    {
+        // 1. CSRF validation for data mutation methods
+        var method = context.Request.Method;
+        if (HttpMethods.IsPost(method) || HttpMethods.IsPut(method) || HttpMethods.IsDelete(method))
+        {
+            var csrfHeader = context.Request.Headers["X-XSRF-TOKEN"].ToString();
+            var csrfCookie = context.Request.Cookies["XSRF-TOKEN"];
+            
+            if (string.IsNullOrEmpty(csrfHeader) || string.IsNullOrEmpty(csrfCookie) || csrfHeader != csrfCookie)
+            {
+                context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                context.Response.ContentType = "text/plain";
+                await context.Response.WriteAsync("CSRF validation failed: X-XSRF-TOKEN header must match XSRF-TOKEN cookie.");
+                return;
+            }
+        }
+        
+        // 2. Read SessionId from __Host-bff Cookie
+        if (!context.Request.Cookies.TryGetValue("__Host-bff", out var sessionId) || string.IsNullOrEmpty(sessionId))
+        {
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            context.Response.ContentType = "text/plain";
+            await context.Response.WriteAsync("Unauthorized: Session cookie is missing.");
+            return;
+        }
+        
+        // 3. Look up token in Redis DB 4
+        var redisMultiplexer = context.RequestServices.GetRequiredService<IConnectionMultiplexer>();
+        var db = redisMultiplexer.GetDatabase(4);
+        var sessionDataStr = await db.StringGetAsync($"bff:session:{sessionId}");
+        
+        if (sessionDataStr.IsNullOrEmpty)
+        {
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            context.Response.ContentType = "text/plain";
+            await context.Response.WriteAsync("Unauthorized: Invalid session or session expired.");
+            return;
+        }
+        
+        try
+        {
+            var sessionData = JsonNode.Parse(sessionDataStr.ToString()) as JsonObject;
+            var accessToken = sessionData?["access_token"]?.ToString() ?? sessionData?["accessToken"]?.ToString();
+            
+            if (string.IsNullOrEmpty(accessToken))
+            {
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                context.Response.ContentType = "text/plain";
+                await context.Response.WriteAsync("Unauthorized: Access token not found in session.");
+                return;
+            }
+            
+            // 4. Inject Authorization: Bearer JWT
+            context.Request.Headers["Authorization"] = $"Bearer {accessToken}";
+            
+            // 5. Required system console log output
+            Console.WriteLine("[BFF Gateway] Nhận request nghiệp vụ. Đọc SessionId từ Cookie, map thành công sang Bearer JWT từ Redis và chuyển tiếp qua YARP.");
+        }
+        catch
+        {
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            context.Response.ContentType = "text/plain";
+            await context.Response.WriteAsync("Unauthorized: Error reading session data.");
+            return;
+        }
+    }
+    
+    await next();
+});
+
 app.MapReverseProxy();
 
 app.Run();

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("sh-bff-gateway")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c01451b7bacc98c01b7d20a4284be41619906c90")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6ee83dcb79566796cb176b91d841bc464b296e57")]
 [assembly: System.Reflection.AssemblyProductAttribute("sh-bff-gateway")]
 [assembly: System.Reflection.AssemblyTitleAttribute("sh-bff-gateway")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
