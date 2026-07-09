@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("sh-backend-core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d316593ff91e87ca8a7c180b2462111ebaf73969")]
 [assembly: System.Reflection.AssemblyProductAttribute("sh-backend-core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("sh-backend-core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
