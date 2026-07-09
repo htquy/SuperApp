@@ -1,8 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "Ck074gTNzWk=",
+  "dgSpecHash": "3DNjxtW10oI=",
   "success": true,
   "projectFilePath": "/home/nobugnolife/Source/SuperApp/BE/sh-bff-gateway/sh-bff-gateway.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/home/nobugnolife/.nuget/packages/system.io.hashing/8.0.0/system.io.hashing.8.0.0.nupkg.sha512",
+    "/home/nobugnolife/.nuget/packages/yarp.reverseproxy/2.3.0/yarp.reverseproxy.2.3.0.nupkg.sha512"
+  ],
   "logs": []
 }
