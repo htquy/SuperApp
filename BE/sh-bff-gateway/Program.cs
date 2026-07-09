@@ -3,6 +3,18 @@ using System.Text.Json.Nodes;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add CORS
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("http://localhost:3000", "http://localhost:3001")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
 // Add HTTP Client
 builder.Services.AddHttpClient();
 
@@ -19,6 +31,8 @@ builder.Services.AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
 var app = builder.Build();
+
+app.UseCors();
 
 // Intercept Login Route
 app.MapPost("/api/auth/login", async (
