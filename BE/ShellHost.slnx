@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="sh-backend-core/sh-backend-core.csproj" />
+  <Project Path="sh-bff-gateway/sh-bff-gateway.csproj" />
+</Solution>

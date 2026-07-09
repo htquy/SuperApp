@@ -1,0 +1,24 @@
+{
+  "version": 2,
+  "dgSpecHash": "t7bdxndVSyM=",
+  "success": true,
+  "projectFilePath": "/home/nobugnolife/Source/SuperApp/BE/sh-backend-core/sh-backend-core.csproj",
+  "expectedPackageFiles": [
+    "/home/nobugnolife/.nuget/packages/microsoft.aspnetcore.openapi/10.0.9/microsoft.aspnetcore.openapi.10.0.9.nupkg.sha512",
+    "/home/nobugnolife/.nuget/packages/microsoft.openapi/2.0.0/microsoft.openapi.2.0.0.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "message": "Package 'Microsoft.OpenApi' 2.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-v5pm-xwqc-g5wc",
+      "projectPath": "/home/nobugnolife/Source/SuperApp/BE/sh-backend-core/sh-backend-core.csproj",
+      "warningLevel": 1,
+      "filePath": "/home/nobugnolife/Source/SuperApp/BE/sh-backend-core/sh-backend-core.csproj",
+      "libraryId": "Microsoft.OpenApi",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    }
+  ]
+}
